@@ -2,15 +2,37 @@ from PIL import Image, ImageDraw, ImageFont
 import math, os
 
 def avgpixel(pixel):
-    # Averages RGB values for one pixel
+    """
+    Averages RGB values for one pixel
+
+    :param pixel: a pixel in the image
+    :type pixel: tuple
+    :return: the average value of the pixel; sum of R, G, and B divided by 3, rounded down
+    :rtype: int
+    """
+
     r, g, b, a = pixel
     avgvalue = (r+g+b) // 3
     return avgvalue
 
 def avgtile(tlx, tly, edge, img):
-    # Averages values from the previous function for a square tile of pixels of length "edge"
-    ## For each pixel, adds avgpixel value to a sum value, then divides it by edge^2, number of pixels in tile
-    ## tlx and tly are coords of the top left corner of the tile; location of tile in the image   
+    """
+    Averages values from the previous function for a square tile of pixels of length "edge"
+    For each pixel, adds avgpixel value to a sum value, then divides it by edge^2, number of pixels in tile
+    tlx and tly are coords of the top left corner of the tile; location of tile in the image   
+    
+    :param tlx: the x coordinate of the top left pixel of the tile
+    :type tlx: int
+    :param tly: the y coordinate of the top left pixel of the tile
+    :type tly: int
+    :param edge: the length and width of the tile
+    :type edge: int
+    :param img: the image object open when the function is executed
+    :type img: str
+    :return: the rounded average value of all pixels in the tile
+    :rtype: int
+    """
+
     sumvalue = 0
     x = 0
     y = 0
@@ -25,9 +47,27 @@ def avgtile(tlx, tly, edge, img):
     return avgvalue
 
 def avglist(edge, img, width, height):
-    # Generates a list of average color values for all tiles in an image
-    ## Goes through the image tile by tile and executes the avgtile function
-    ## Appends the returned value to a list
+    """
+    Generates a list of average color values for all tiles in an image
+    Goes through the image tile by tile and executes the avgtile function
+    Appends the returned value to a list
+
+    :param edge: the length and width of the tile
+    :type edge: int
+    :param img: the image object open when the function is executed
+    :type img: str
+    :param width: the total width of the input image in pixels
+    :type tlx: int
+    :param width: the total height of the input image in pixels
+    :type tly: int
+    :return valuelist: a list of average values for all tiles in the input image
+    :rtype: list
+    :return tilex: the number of tiles in a row across the image
+    :rtype: int
+    :return tiley: the number of tiles in a column down the image
+    :rtype: int
+    """
+
     tlx = 0
     tly = 0
     tilex = 0
@@ -47,7 +87,27 @@ def avglist(edge, img, width, height):
 
 
 def makechar(img, tlx, tly, edge, char, fontsize, color):
-    # Creates a text character in the center of a pixel tile with variable size and color
+    """
+    Creates a text character in the center of a tile in the output image with variable size and color
+
+    :param img: the image object open when the function is executed
+    :type img: str
+    :param width: the total width of the input image in pixels
+    :type tlx: int
+    :param width: the total height of the input image in pixels
+    :type tly: int
+    :param edge: the length and width of the tile
+    :type edge: int
+    :param char: the character to be drawn on the output image
+    :type char: str
+    :param fontsize: the size of the character
+    :type fonstize: int
+    :param color: the color of the character
+    :type color: tuple
+    :return: None
+    :rtype: N/A
+    """
+    
     myfont = ImageFont.truetype("arial.ttf", size=fontsize)
     draw = ImageDraw.Draw(img)  
     draw.text((tlx+(edge//2), tly+(edge//2)), char, fill=color, align="center", font=myfont, anchor='mm')
